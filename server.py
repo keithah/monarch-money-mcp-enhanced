@@ -15,6 +15,26 @@ from mcp.types import ServerCapabilities
 from mcp.types import Tool, TextContent
 from monarchmoney import MonarchMoney
 
+
+def convert_dates_to_strings(obj: Any) -> Any:
+    """
+    Recursively convert all date/datetime objects to ISO format strings.
+    
+    This ensures that the data can be serialized by any JSON encoder,
+    not just our custom one. This is necessary because the MCP framework
+    may attempt to serialize the response before we can use our custom encoder.
+    """
+    if isinstance(obj, (date, datetime)):
+        return obj.isoformat()
+    elif isinstance(obj, dict):
+        return {key: convert_dates_to_strings(value) for key, value in obj.items()}
+    elif isinstance(obj, list):
+        return [convert_dates_to_strings(item) for item in obj]
+    elif isinstance(obj, tuple):
+        return tuple(convert_dates_to_strings(item) for item in obj)
+    else:
+        return obj
+
 # Initialize the MCP server
 server = Server("monarch-money")
 
@@ -244,7 +264,9 @@ async def call_tool(name: str, arguments: Dict[str, Any]) -> List[TextContent]:
     try:
         if name == "get_accounts":
             accounts = await mm_client.get_accounts()
-            return [TextContent(type="text", text=json.dumps(accounts, indent=2, default=str))]
+            # Convert date objects to strings before serialization
+            accounts = convert_dates_to_strings(accounts)
+            return [TextContent(type="text", text=json.dumps(accounts, indent=2))]
         
         elif name == "get_transactions":
             # Build filter parameters
@@ -263,7 +285,9 @@ async def call_tool(name: str, arguments: Dict[str, Any]) -> List[TextContent]:
                 offset=arguments.get("offset", 0),
                 **filters
             )
-            return [TextContent(type="text", text=json.dumps(transactions, indent=2, default=str))]
+            # Convert date objects to strings before serialization
+            transactions = convert_dates_to_strings(transactions)
+            return [TextContent(type="text", text=json.dumps(transactions, indent=2))]
         
         elif name == "get_budgets":
             kwargs = {}
@@ -272,8 +296,21 @@ async def call_tool(name: str, arguments: Dict[str, Any]) -> List[TextContent]:
             if "end_date" in arguments:
                 kwargs["end_date"] = datetime.strptime(arguments["end_date"], "%Y-%m-%d").date()
             
-            budgets = await mm_client.get_budgets(**kwargs)
-            return [TextContent(type="text", text=json.dumps(budgets, indent=2, default=str))]
+            try:
+                budgets = await mm_client.get_budgets(**kwargs)
+                # Convert date objects to strings before serialization
+                budgets = convert_dates_to_strings(budgets)
+                return [TextContent(type="text", text=json.dumps(budgets, indent=2))]
+            except Exception as e:
+                # Handle the case where no budgets exist
+                if "Something went wrong while processing: None" in str(e):
+                    return [TextContent(type="text", text=json.dumps({
+                        "budgets": [],
+                        "message": "No budgets configured in your Monarch Money account"
+                    }, indent=2))]
+                else:
+                    # Re-raise other errors
+                    raise
         
         elif name == "get_cashflow":
             kwargs = {}
@@ -283,11 +320,15 @@ async def call_tool(name: str, arguments: Dict[str, Any]) -> List[TextContent]:
                 kwargs["end_date"] = datetime.strptime(arguments["end_date"], "%Y-%m-%d").date()
             
             cashflow = await mm_client.get_cashflow(**kwargs)
-            return [TextContent(type="text", text=json.dumps(cashflow, indent=2, default=str))]
+            # Convert date objects to strings before serialization
+            cashflow = convert_dates_to_strings(cashflow)
+            return [TextContent(type="text", text=json.dumps(cashflow, indent=2))]
         
         elif name == "get_transaction_categories":
             categories = await mm_client.get_transaction_categories()
-            return [TextContent(type="text", text=json.dumps(categories, indent=2, default=str))]
+            # Convert date objects to strings before serialization
+            categories = convert_dates_to_strings(categories)
+            return [TextContent(type="text", text=json.dumps(categories, indent=2))]
         
         elif name == "create_transaction":
             # Convert date string to date object
@@ -301,7 +342,9 @@ async def call_tool(name: str, arguments: Dict[str, Any]) -> List[TextContent]:
                 date=transaction_date,
                 notes=arguments.get("notes")
             )
-            return [TextContent(type="text", text=json.dumps(result, indent=2, default=str))]
+            # Convert date objects to strings before serialization
+            result = convert_dates_to_strings(result)
+            return [TextContent(type="text", text=json.dumps(result, indent=2))]
         
         elif name == "update_transaction":
             # Build update parameters
@@ -318,11 +361,15 @@ async def call_tool(name: str, arguments: Dict[str, Any]) -> List[TextContent]:
                 updates["notes"] = arguments["notes"]
             
             result = await mm_client.update_transaction(**updates)
-            return [TextContent(type="text", text=json.dumps(result, indent=2, default=str))]
+            # Convert date objects to strings before serialization
+            result = convert_dates_to_strings(result)
+            return [TextContent(type="text", text=json.dumps(result, indent=2))]
         
         elif name == "refresh_accounts":
             result = await mm_client.request_accounts_refresh()
-            return [TextContent(type="text", text=json.dumps(result, indent=2, default=str))]
+            # Convert date objects to strings before serialization
+            result = convert_dates_to_strings(result)
+            return [TextContent(type="text", text=json.dumps(result, indent=2))]
         
         else:
             return [TextContent(type="text", text=f"Error: Unknown tool '{name}'")]

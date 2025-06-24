@@ -132,6 +132,20 @@ The server automatically manages authentication sessions:
 - Delete the `.mm` directory to clear cached sessions
 - Set `MONARCH_FORCE_LOGIN=true` in your `.mcp.json` env section temporarily
 
+## Credits
+
+### MCP Server
+- **Author**: Taurus Colvin
+- **Description**: MCP (Model Context Protocol) server wrapper for Monarch Money
+
+### MonarchMoney Python Library
+- **Author**: hammem ([@hammem](https://github.com/hammem))
+- **Repository**: [https://github.com/hammem/monarchmoney](https://github.com/hammem/monarchmoney)
+- **License**: MIT License
+- **Description**: The underlying Python library that provides API access to Monarch Money
+
+This MCP server wraps the monarchmoney Python library to provide seamless integration with AI assistants through the Model Context Protocol.
+
 ## Security Notes
 
 - Keep your credentials secure in your `.mcp.json` file
