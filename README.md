@@ -135,7 +135,7 @@ The server automatically manages authentication sessions:
 ## Credits
 
 ### MCP Server
-- **Author**: Taurus Colvin
+- **Author**: Taurus Colvin ([@colvint](https://github.com/colvint))
 - **Description**: MCP (Model Context Protocol) server wrapper for Monarch Money
 
 ### MonarchMoney Python Library
