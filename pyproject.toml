@@ -1,0 +1,13 @@
+[project]
+name = "monarch-money-mcp"
+version = "0.1.0"
+description = "MCP server for MonarchMoney financial data access"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "mcp>=1.9.4",
+    "monarchmoney>=0.1.15",
+]
+
+[project.scripts]
+monarch-money-mcp = "server:main"
