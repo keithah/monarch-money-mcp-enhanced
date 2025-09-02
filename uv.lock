@@ -436,7 +436,7 @@ wheels = [
 
 [[package]]
 name = "monarch-money-mcp-enhanced"
-version = "0.2.5"
+version = "0.3.0"
 source = { virtual = "." }
 dependencies = [
     { name = "mcp" },
@@ -451,16 +451,16 @@ requires-dist = [
 
 [[package]]
 name = "monarchmoney-enhanced"
-version = "0.2.5"
+version = "0.3.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "aiohttp" },
     { name = "gql" },
     { name = "oathtool" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/27/53/154607a129d409220c16f3a41b355aa1ad46c07a6b003c70270f3acfbd22/monarchmoney_enhanced-0.2.5.tar.gz", hash = "sha256:017aa8720e0b060bba9740b3cce61f5960780e490f42a644a3ce7255df0004e1", size = 44532, upload-time = "2025-09-02T07:46:29.954Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/0f/8a/e1a45f488592106e3345cea8a586386d17aafb0cc6edca9991e6415e8d16/monarchmoney_enhanced-0.3.0.tar.gz", hash = "sha256:feb5483a546edd684272b341acd1e8a62ed0edb9101125f3ff7ffb1a7acfa8a1", size = 46914, upload-time = "2025-09-02T14:20:18.635Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/a4/ac/df350607528cd5c6ff5e1e27be8aeaf5aa1dce1e9a401bc0a6740cbf59ff/monarchmoney_enhanced-0.2.5-py3-none-any.whl", hash = "sha256:54ccf5f9ce1736e0b8c5d381055d306182e508fb3361681a1515214e38a19bcf", size = 29832, upload-time = "2025-09-02T07:46:28.685Z" },
+    { url = "https://files.pythonhosted.org/packages/5d/94/89ce56ec3e7f709ff3c6b92a30145a6169194709e0196c2aa4fe3b02c7ec/monarchmoney_enhanced-0.3.0-py3-none-any.whl", hash = "sha256:3bf57508356572d52bdbd3c5ada41f4b86ac2166355ee2120e85300e79ef5e23", size = 31692, upload-time = "2025-09-02T14:20:17.823Z" },
 ]
 
 [[package]]
