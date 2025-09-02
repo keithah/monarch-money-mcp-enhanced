@@ -171,7 +171,7 @@ This repository includes GitHub Actions that automatically:
 
 ### Enhanced MCP Server
 - **Enhanced By**: Keith Herrington ([@keithah](https://github.com/keithah))
-- **Repository**: [https://github.com/keithah/monarch-money-mcp](https://github.com/keithah/monarch-money-mcp)
+- **Repository**: [https://github.com/keithah/monarch-money-mcp-enhanced](https://github.com/keithah/monarch-money-mcp-enhanced)
 - **Name**: `monarch-money-mcp-enhanced`
 - **Version**: Synchronized with `monarchmoney-enhanced` library
 - **Features**: Dynamic tool generation, auto-updates, complete API coverage
