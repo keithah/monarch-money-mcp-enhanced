@@ -6,7 +6,7 @@ readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [
     "mcp>=1.9.4",
-    "monarchmoney>=0.1.15",
+    "monarchmoney-enhanced",
 ]
 
 [project.scripts]

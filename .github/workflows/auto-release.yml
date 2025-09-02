@@ -1,0 +1,153 @@
+name: Auto Release on MonarchMoney Enhanced Update
+
+on:
+  schedule:
+    # Check for updates every 6 hours
+    - cron: '0 */6 * * *'
+  workflow_dispatch:
+    # Allow manual triggering
+
+jobs:
+  check-and-release:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        fetch-depth: 0
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+
+    - name: Install uv
+      uses: astral-sh/setup-uv@v2
+      
+    - name: Get current monarchmoney-enhanced version
+      id: current-version
+      run: |
+        uv pip list | grep monarchmoney-enhanced | awk '{print $2}' > current_version.txt
+        CURRENT=$(cat current_version.txt 2>/dev/null || echo "0.0.0")
+        echo "current=$CURRENT" >> $GITHUB_OUTPUT
+
+    - name: Check latest monarchmoney-enhanced version
+      id: latest-version
+      run: |
+        LATEST=$(pip index versions monarchmoney-enhanced | grep "Available versions:" | sed 's/Available versions: //' | cut -d',' -f1 | tr -d ' ')
+        echo "latest=$LATEST" >> $GITHUB_OUTPUT
+
+    - name: Compare versions and update if needed
+      id: version-check
+      run: |
+        CURRENT="${{ steps.current-version.outputs.current }}"
+        LATEST="${{ steps.latest-version.outputs.latest }}"
+        
+        echo "Current version: $CURRENT"
+        echo "Latest version: $LATEST"
+        
+        if [ "$CURRENT" != "$LATEST" ]; then
+          echo "needs_update=true" >> $GITHUB_OUTPUT
+          echo "new_version=$LATEST" >> $GITHUB_OUTPUT
+        else
+          echo "needs_update=false" >> $GITHUB_OUTPUT
+        fi
+
+    - name: Update pyproject.toml if needed
+      if: steps.version-check.outputs.needs_update == 'true'
+      run: |
+        # Update the version in pyproject.toml to match the new monarchmoney-enhanced version
+        NEW_VERSION="${{ steps.version-check.outputs.new_version }}"
+        sed -i "s/version = \".*\"/version = \"$NEW_VERSION\"/" pyproject.toml
+        
+        # Update dependencies to latest version
+        uv sync --upgrade
+
+    - name: Test the updated server
+      if: steps.version-check.outputs.needs_update == 'true'
+      run: |
+        # Basic import test to ensure server can load
+        uv run python -c "
+        import sys
+        sys.path.append('.')
+        from server import MonarchMoney
+        print('✅ Server loads successfully')
+        print('✅ MonarchMoney import works')
+        
+        # Test dynamic tool generation without auth
+        import inspect
+        methods = [m for m in dir(MonarchMoney) if not m.startswith('_') and callable(getattr(MonarchMoney, m))]
+        print(f'✅ Found {len(methods)} methods in MonarchMoney class')
+        "
+
+    - name: Generate release notes
+      if: steps.version-check.outputs.needs_update == 'true'
+      id: release-notes
+      run: |
+        NEW_VERSION="${{ steps.version-check.outputs.new_version }}"
+        CURRENT_VERSION="${{ steps.current-version.outputs.current }}"
+        
+        cat << EOF > release_notes.md
+        ## Auto-Release v${NEW_VERSION}
+        
+        This release automatically updates the MCP server to work with the latest \`monarchmoney-enhanced\` library.
+        
+        ### Changes
+        - Updated \`monarchmoney-enhanced\` from \`${CURRENT_VERSION}\` to \`${NEW_VERSION}\`
+        - All MonarchMoney methods are automatically exposed as MCP tools
+        - No manual intervention required - the server dynamically adapts to library changes
+        
+        ### New Features
+        Any new methods added to \`monarchmoney-enhanced\` v${NEW_VERSION} are automatically available as MCP tools.
+        
+        ### Installation
+        Update your Claude Desktop configuration to use this latest version:
+        \`\`\`json
+        {
+          "mcpServers": {
+            "monarch-money": {
+              "command": "/path/to/uv",
+              "args": ["--directory", "/path/to/monarch-money-mcp", "run", "python", "server.py"],
+              "env": {
+                "MONARCH_EMAIL": "your-email@example.com",
+                "MONARCH_PASSWORD": "your-password",
+                "MONARCH_MFA_SECRET": "your-mfa-secret"
+              }
+            }
+          }
+        }
+        \`\`\`
+        EOF
+
+    - name: Commit changes
+      if: steps.version-check.outputs.needs_update == 'true'
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git add .
+        git commit -m "Auto-update to monarchmoney-enhanced v${{ steps.version-check.outputs.new_version }}"
+
+    - name: Create tag and release
+      if: steps.version-check.outputs.needs_update == 'true'
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: v${{ steps.version-check.outputs.new_version }}
+        release_name: "Auto Release v${{ steps.version-check.outputs.new_version }}"
+        body_path: release_notes.md
+        draft: false
+        prerelease: false
+
+    - name: Push changes
+      if: steps.version-check.outputs.needs_update == 'true'
+      run: |
+        git push origin main
+        git push origin v${{ steps.version-check.outputs.new_version }}
+
+    - name: No update needed
+      if: steps.version-check.outputs.needs_update == 'false'
+      run: |
+        echo "✅ MonarchMoney Enhanced is already up to date (v${{ steps.current-version.outputs.current }})"

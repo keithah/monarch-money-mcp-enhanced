@@ -1,15 +1,27 @@
-# Monarch Money MCP Server
+# Monarch Money MCP Server (Dynamic)
 
-An MCP (Model Context Protocol) server that provides access to Monarch Money financial data and operations.
+A dynamic MCP (Model Context Protocol) server that automatically exposes **all** methods from the `monarchmoney-enhanced` library as MCP tools. No manual updates needed when the library adds new features!
 
-## Features
+## Key Features
 
-- **Account Management**: List and retrieve account information
-- **Transaction Operations**: Get transactions with filtering by date range, accounts, and categories
-- **Budget Analysis**: Access budget data and spending insights
-- **Category Management**: List and manage transaction categories
-- **Goal Tracking**: Access financial goals and progress
-- **Net Worth Tracking**: Retrieve net worth snapshots over time
+🔄 **Fully Dynamic**: Automatically discovers and exposes all MonarchMoney methods as tools  
+🚀 **Auto-Updating**: GitHub Actions automatically release new versions when `monarchmoney-enhanced` updates  
+📊 **Complete API Access**: Every method in the library becomes an MCP tool automatically  
+🛠️ **Smart Schema Generation**: Automatically generates parameter schemas from method signatures  
+
+## Automatically Available Features
+
+Since this server dynamically exposes all `monarchmoney-enhanced` methods, you get access to **everything**:
+
+- **Account Management**: Create, update, delete accounts, get balances, history
+- **Transaction Operations**: CRUD operations, categorization, tagging, rules, splits
+- **Budget Management**: Set budgets, analyze spending, track goals
+- **Category & Tag Management**: Create, modify, delete categories and tags
+- **Institution Management**: Manage connected financial institutions
+- **Recurring Transactions**: Track and manage recurring payments
+- **Investment Tracking**: Portfolio holdings, performance data
+- **Subscription Management**: Account details and billing info
+- **And more...**: Any new features added to `monarchmoney-enhanced` are instantly available!
 
 ## Installation
 
@@ -58,52 +70,60 @@ Add the server to your `.mcp.json` configuration file:
 3. Copy the secret key (it will be a string like `T5SPVJIBRNPNNINFSH5W7RFVF2XYADYX`)
 4. Use this as your `MONARCH_MFA_SECRET`
 
-## Available Tools
+## How It Works
 
-### `get_accounts`
-List all accounts with their balances and details.
+The server automatically discovers all public methods from the `monarchmoney-enhanced` library and creates MCP tools for them. This means:
 
-### `get_transactions`
-Get transactions with optional filtering:
-- `start_date`: Filter transactions from this date (YYYY-MM-DD)
-- `end_date`: Filter transactions to this date (YYYY-MM-DD)
-- `account_ids`: List of account IDs to filter by
-- `category_ids`: List of category IDs to filter by
-- `limit`: Maximum number of transactions to return
+1. **No Manual Tool Definitions**: Methods are discovered at runtime
+2. **Automatic Schema Generation**: Parameter types and requirements are inferred from method signatures  
+3. **Instant Updates**: When `monarchmoney-enhanced` adds new methods, they become available immediately
+4. **Complete Coverage**: Every public method becomes an MCP tool
 
-### `get_categories`
-List all transaction categories.
+## Available Tools (Dynamic)
 
-### `get_budgets`
-Get budget information and spending analysis.
+Instead of listing specific tools, here's how to see what's available:
 
-### `get_goals`
-List financial goals and their progress.
+1. **Runtime Discovery**: The server lists all available tools when it starts
+2. **Method Coverage**: All public methods from `MonarchMoney` class become tools
+3. **Automatic Documentation**: Tool descriptions are generated from method docstrings
 
-### `get_cashflow`
-Get cashflow data for income and expense analysis.
+### Example Tools (Auto-Generated)
 
-### `get_investments`
-Get investment account details and performance.
+Some examples of tools that are automatically created:
 
-### `get_net_worth`
-Get net worth snapshots over time.
+- `get_accounts` - Retrieve all linked financial accounts
+- `create_transaction` - Creates a transaction with the given parameters  
+- `create_transaction_category` - Creates a new transaction category
+- `get_transaction_tags` - Get all transaction tags
+- `set_budget_amount` - Set budget amount for a category
+- `get_merchants` - Get all merchants
+- `delete_transaction` - Deletes the given transaction
+- `get_recurring_transactions` - Get all recurring transactions
+- `create_manual_account` - Creates a new manual account
+- **And 30+ more...** (automatically updated as the library grows)
 
 ## Usage Examples
 
-### Basic Account Information
+### Creating Transaction Categories
 ```
-Use the get_accounts tool to see all my accounts and their current balances.
-```
-
-### Transaction Analysis
-```
-Get all transactions from January 2024 using get_transactions with start_date "2024-01-01" and end_date "2024-01-31".
+Use create_transaction_category with name "Shared - Telco" to create a new category for shared telecom expenses.
 ```
 
-### Budget Tracking
+### Applying Transaction Rules  
 ```
-Show me my current budget status using the get_budgets tool.
+Use the transaction management tools to automatically categorize transactions. For example:
+- Find transactions containing "Sentris Network LLC" 
+- Update them to use the "Shared - Telco" category
+```
+
+### Complete Financial Management
+```
+Since all MonarchMoney methods are available:
+- Create and manage accounts with create_manual_account
+- Set up budgets with set_budget_amount  
+- Tag transactions with set_transaction_tags
+- Analyze spending patterns with get_cashflow_summary
+- Track investments with get_account_holdings
 ```
 
 ## Session Management
@@ -132,19 +152,37 @@ The server automatically manages authentication sessions:
 - Delete the `.mm` directory to clear cached sessions
 - Set `MONARCH_FORCE_LOGIN=true` in your `.mcp.json` env section temporarily
 
+## Auto-Updates
+
+This repository includes GitHub Actions that automatically:
+
+1. **Monitor Updates**: Checks every 6 hours for new `monarchmoney-enhanced` releases
+2. **Auto-Release**: Creates new releases when the library updates  
+3. **Zero Maintenance**: No manual intervention needed to get new features
+4. **Dependency Management**: Dependabot keeps other dependencies secure
+
 ## Credits
 
-### MCP Server
+### Original MCP Server
 - **Author**: Taurus Colvin ([@colvint](https://github.com/colvint))
-- **Description**: MCP (Model Context Protocol) server wrapper for Monarch Money
+- **Repository**: [https://github.com/colvint/monarch-money-mcp](https://github.com/colvint/monarch-money-mcp)
 
-### MonarchMoney Python Library
+### Dynamic Enhancement
+- **Enhanced By**: Keith Hadfield ([@keithah](https://github.com/keithah))
+- **Repository**: [https://github.com/keithah/monarch-money-mcp](https://github.com/keithah/monarch-money-mcp)
+- **Features**: Dynamic tool generation, auto-updates, complete API coverage
+
+### MonarchMoney Enhanced Library
+- **Enhanced By**: Keith Hadfield ([@keithah](https://github.com/keithah))
+- **Repository**: [https://github.com/keithah/monarchmoney-enhanced](https://github.com/keithah/monarchmoney-enhanced)
+- **Description**: Enhanced version of the MonarchMoney Python library with additional features
+
+### Original MonarchMoney Python Library
 - **Author**: hammem ([@hammem](https://github.com/hammem))
 - **Repository**: [https://github.com/hammem/monarchmoney](https://github.com/hammem/monarchmoney)
 - **License**: MIT License
-- **Description**: The underlying Python library that provides API access to Monarch Money
 
-This MCP server wraps the monarchmoney Python library to provide seamless integration with AI assistants through the Model Context Protocol.
+This dynamic MCP server automatically adapts to library changes, providing seamless integration with AI assistants through the Model Context Protocol.
 
 ## Security Notes
 
