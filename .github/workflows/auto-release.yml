@@ -62,6 +62,9 @@ jobs:
         NEW_VERSION="${{ steps.version-check.outputs.new_version }}"
         sed -i "s/version = \".*\"/version = \"$NEW_VERSION\"/" pyproject.toml
         
+        # Update server version in server.py
+        sed -i "s/server_version=\".*\"/server_version=\"$NEW_VERSION\"/" server.py
+        
         # Update dependencies to latest version
         uv sync --upgrade
 
@@ -90,12 +93,13 @@ jobs:
         CURRENT_VERSION="${{ steps.current-version.outputs.current }}"
         
         cat << EOF > release_notes.md
-        ## Auto-Release v${NEW_VERSION}
+        ## monarch-money-mcp-enhanced v${NEW_VERSION}
         
-        This release automatically updates the MCP server to work with the latest \`monarchmoney-enhanced\` library.
+        This release automatically synchronizes the MCP server version with the latest \`monarchmoney-enhanced\` library.
         
         ### Changes
         - Updated \`monarchmoney-enhanced\` from \`${CURRENT_VERSION}\` to \`${NEW_VERSION}\`
+        - MCP server version synchronized to \`${NEW_VERSION}\`
         - All MonarchMoney methods are automatically exposed as MCP tools
         - No manual intervention required - the server dynamically adapts to library changes
         
@@ -103,13 +107,13 @@ jobs:
         Any new methods added to \`monarchmoney-enhanced\` v${NEW_VERSION} are automatically available as MCP tools.
         
         ### Installation
-        Update your Claude Desktop configuration to use this latest version:
+        Update your Claude Desktop configuration:
         \`\`\`json
         {
           "mcpServers": {
-            "monarch-money": {
+            "monarch-money-enhanced": {
               "command": "/path/to/uv",
-              "args": ["--directory", "/path/to/monarch-money-mcp", "run", "python", "server.py"],
+              "args": ["--directory", "/path/to/monarch-money-mcp-enhanced", "run", "python", "server.py"],
               "env": {
                 "MONARCH_EMAIL": "your-email@example.com",
                 "MONARCH_PASSWORD": "your-password",

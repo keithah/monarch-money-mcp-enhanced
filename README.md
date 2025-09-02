@@ -1,6 +1,8 @@
-# Monarch Money MCP Server (Dynamic)
+# Monarch Money MCP Server Enhanced
 
 A dynamic MCP (Model Context Protocol) server that automatically exposes **all** methods from the `monarchmoney-enhanced` library as MCP tools. No manual updates needed when the library adds new features!
+
+**Version**: 0.2.2 (synchronized with `monarchmoney-enhanced`)
 
 ## Key Features
 
@@ -39,11 +41,11 @@ Add the server to your `.mcp.json` configuration file:
 ```json
 {
   "mcpServers": {
-    "monarch-money": {
+    "monarch-money-enhanced": {
       "command": "/path/to/uv",
       "args": [
         "--directory", 
-        "/path/to/monarch-money-mcp",
+        "/path/to/monarch-money-mcp-enhanced",
         "run",
         "python",
         "server.py"
@@ -60,7 +62,7 @@ Add the server to your `.mcp.json` configuration file:
 
 **Important Notes:**
 - Replace `/path/to/uv` with the full path to your `uv` executable (find it with `which uv`)
-- Replace `/path/to/monarch-money-mcp` with the absolute path to this server directory
+- Replace `/path/to/monarch-money-mcp-enhanced` with the absolute path to this server directory
 - Use absolute paths, not relative paths
 
 ### Getting Your MFA Secret
@@ -167,9 +169,11 @@ This repository includes GitHub Actions that automatically:
 - **Author**: Taurus Colvin ([@colvint](https://github.com/colvint))
 - **Repository**: [https://github.com/colvint/monarch-money-mcp](https://github.com/colvint/monarch-money-mcp)
 
-### Dynamic Enhancement
+### Enhanced MCP Server
 - **Enhanced By**: Keith Herrington ([@keithah](https://github.com/keithah))
 - **Repository**: [https://github.com/keithah/monarch-money-mcp](https://github.com/keithah/monarch-money-mcp)
+- **Name**: `monarch-money-mcp-enhanced`
+- **Version**: Synchronized with `monarchmoney-enhanced` library
 - **Features**: Dynamic tool generation, auto-updates, complete API coverage
 
 ### MonarchMoney Enhanced Library

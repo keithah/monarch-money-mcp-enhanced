@@ -75,7 +75,7 @@ def get_method_schema(method) -> Dict[str, Any]:
 
 
 # Initialize the MCP server
-server = Server("monarch-money-dynamic")
+server = Server("monarch-money-mcp-enhanced")
 mm_client: Optional[MonarchMoney] = None
 session_file = Path.home() / ".monarchmoney_session"
 
@@ -213,8 +213,8 @@ async def main():
             read_stream, 
             write_stream,
             InitializationOptions(
-                server_name="monarch-money-dynamic",
-                server_version="1.0.0",
+                server_name="monarch-money-mcp-enhanced",
+                server_version="0.2.2",
                 capabilities=ServerCapabilities(
                     tools={}
                 )
