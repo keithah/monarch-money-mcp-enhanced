@@ -214,7 +214,7 @@ async def main():
             write_stream,
             InitializationOptions(
                 server_name="monarch-money-mcp-enhanced",
-                server_version="0.2.3",
+                server_version="0.2.4",
                 capabilities=ServerCapabilities(
                     tools={}
                 )

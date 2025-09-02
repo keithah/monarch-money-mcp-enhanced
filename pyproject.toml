@@ -1,6 +1,6 @@
 [project]
 name = "monarch-money-mcp-enhanced"
-version = "0.2.3"
+version = "0.2.4"
 description = "Enhanced MCP server for MonarchMoney financial data access with dynamic tool generation"
 readme = "README.md"
 requires-python = ">=3.10"
