@@ -436,7 +436,7 @@ wheels = [
 
 [[package]]
 name = "monarch-money-mcp-enhanced"
-version = "0.3.1"
+version = "0.3.3"
 source = { virtual = "." }
 dependencies = [
     { name = "mcp" },

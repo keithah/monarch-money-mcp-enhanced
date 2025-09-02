@@ -2,7 +2,7 @@
 
 A dynamic MCP (Model Context Protocol) server that automatically exposes **all** methods from the `monarchmoney-enhanced` library as MCP tools. No manual updates needed when the library adds new features!
 
-**Version**: 0.3.1 (synchronized with `monarchmoney-enhanced`)
+**Version**: 0.3.3 (synchronized with `monarchmoney-enhanced`)
 
 ## Key Features
 
