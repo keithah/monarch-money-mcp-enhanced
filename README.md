@@ -168,12 +168,12 @@ This repository includes GitHub Actions that automatically:
 - **Repository**: [https://github.com/colvint/monarch-money-mcp](https://github.com/colvint/monarch-money-mcp)
 
 ### Dynamic Enhancement
-- **Enhanced By**: Keith Hadfield ([@keithah](https://github.com/keithah))
+- **Enhanced By**: Keith Herrington ([@keithah](https://github.com/keithah))
 - **Repository**: [https://github.com/keithah/monarch-money-mcp](https://github.com/keithah/monarch-money-mcp)
 - **Features**: Dynamic tool generation, auto-updates, complete API coverage
 
 ### MonarchMoney Enhanced Library
-- **Enhanced By**: Keith Hadfield ([@keithah](https://github.com/keithah))
+- **Enhanced By**: Keith Herrington ([@keithah](https://github.com/keithah))
 - **Repository**: [https://github.com/keithah/monarchmoney-enhanced](https://github.com/keithah/monarchmoney-enhanced)
 - **Description**: Enhanced version of the MonarchMoney Python library with additional features
 
