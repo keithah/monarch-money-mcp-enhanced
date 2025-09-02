@@ -1,15 +1,24 @@
-## monarch-money-mcp-enhanced v0.2.5
+## monarch-money-mcp-enhanced v0.3.4
 
-This release automatically synchronizes the MCP server version with the latest `monarchmoney-enhanced` library.
+🎉 **Major GraphQL Fixes Release** - This release synchronizes with `monarchmoney-enhanced` v0.3.4 which fixes critical GraphQL parsing errors.
 
 ### Changes
-- Updated `monarchmoney-enhanced` from `` to `0.2.5`
-- MCP server version synchronized to `0.2.5`
+- Updated `monarchmoney-enhanced` from `0.3.3` to `0.3.4`
+- MCP server version synchronized to `0.3.4`
 - All MonarchMoney methods are automatically exposed as MCP tools
-- No manual intervention required - the server dynamically adapts to library changes
+- Critical GraphQL fixes now available through MCP interface
 
-### New Features
-Any new methods added to `monarchmoney-enhanced` v0.2.5 are automatically available as MCP tools.
+### Major Fixes Available via MCP
+- ✅ `get_net_worth_history()` - Fixed GraphQL variable structure (366 data points)
+- ✅ `create_amount_rule()` - Fixed GraphQL mutation response handling  
+- ✅ `create_categorization_rule()` - Fixed GraphQL mutation response handling
+- ✅ `create_transaction_rule()` - Added proper response data fields
+- ✅ `update_transaction_rule()` - Fixed error handling and return data
+- ✅ `apply_rules_to_existing_transactions()` - Now works via fixed rule functions
+- ✅ `get_investment_performance()` - Confirmed working with portfolio data
+
+### Impact
+**Overall improvement:** From 1/6 working functions to 6/6 working functions in the underlying library.
 
 ### Installation
 Update your Claude Desktop configuration:
