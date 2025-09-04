@@ -79,6 +79,12 @@ server = Server("monarch-money-mcp-enhanced")
 mm_client: Optional[MonarchMoney] = None
 session_file = Path.home() / ".monarchmoney_session"
 
+# Change to a writable directory for session storage
+import tempfile
+temp_dir = Path(tempfile.gettempdir()) / "monarch-mcp"
+temp_dir.mkdir(exist_ok=True)
+os.chdir(temp_dir)
+
 
 async def initialize_client():
     """Initialize the MonarchMoney client with authentication."""
@@ -217,7 +223,7 @@ async def main():
             write_stream,
             InitializationOptions(
                 server_name="monarch-money-mcp-enhanced",
-                server_version="0.6.0",
+                server_version="0.6.1",
                 capabilities=ServerCapabilities(
                     tools={}
                 )
