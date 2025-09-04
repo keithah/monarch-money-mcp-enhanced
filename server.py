@@ -103,6 +103,7 @@ async def initialize_client():
             return
         except Exception:
             # Existing session invalid, logging in fresh
+            pass
     
     # Login with credentials
     if mfa_secret:
@@ -214,7 +215,7 @@ async def main():
             write_stream,
             InitializationOptions(
                 server_name="monarch-money-mcp-enhanced",
-                server_version="0.5.2",
+                server_version="0.5.3",
                 capabilities=ServerCapabilities(
                     tools={}
                 )
