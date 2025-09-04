@@ -205,7 +205,9 @@ async def main():
         await initialize_client()
         # Initialized client with dynamic tools
     except Exception as e:
-        # Failed to initialize MonarchMoney client - exit silently for MCP
+        # Failed to initialize MonarchMoney client - log to stderr for MCP debugging
+        import sys
+        print(f"Failed to initialize MonarchMoney client: {e}", file=sys.stderr)
         return
     
     # Run the MCP server
@@ -215,7 +217,7 @@ async def main():
             write_stream,
             InitializationOptions(
                 server_name="monarch-money-mcp-enhanced",
-                server_version="0.5.3",
+                server_version="0.5.4",
                 capabilities=ServerCapabilities(
                     tools={}
                 )
