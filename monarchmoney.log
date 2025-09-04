@@ -31,3 +31,5 @@ Traceback (most recent call last):
     json_data = file_data.decode("utf-8")
 UnicodeDecodeError: 'utf-8' codec can't decode byte 0x80 in position 0: invalid start byte
 2025-09-03 21:20:19,796 - AuthenticationService - ERROR - error:76 - Failed to load session - {'session_file': '.mm/mm_session.pickle', 'error': "'utf-8' codec can't decode byte 0x80 in position 0: invalid start byte"}
+2025-09-03 21:28:50,351 - monarchmoney - WARNING - warning:71 - Using default password for session encryption. Consider providing explicit password for better security.
+2025-09-03 21:28:50,378 - AuthenticationService - INFO - info:62 - Attempting user login - {'email': 'keith@hadm.net'}
