@@ -7,6 +7,10 @@ on:
   workflow_dispatch:
     # Allow manual triggering
 
+permissions:
+  contents: write
+  packages: write
+
 jobs:
   check-and-release:
     runs-on: ubuntu-latest
@@ -29,14 +33,22 @@ jobs:
     - name: Get current monarchmoney-enhanced version
       id: current-version
       run: |
-        uv pip list | grep monarchmoney-enhanced | awk '{print $2}' > current_version.txt
-        CURRENT=$(cat current_version.txt 2>/dev/null || echo "0.0.0")
+        # Read from pyproject.toml dependencies
+        CURRENT=$(grep monarchmoney-enhanced pyproject.toml | grep -oE '[0-9]+\.[0-9]+\.[0-9]+' || echo "0.0.0")
         echo "current=$CURRENT" >> $GITHUB_OUTPUT
 
     - name: Check latest monarchmoney-enhanced version
       id: latest-version
       run: |
-        LATEST=$(pip index versions monarchmoney-enhanced | grep "Available versions:" | sed 's/Available versions: //' | cut -d',' -f1 | tr -d ' ')
+        # Use uv pip to check latest version
+        uv pip install monarchmoney-enhanced --dry-run 2>&1 | grep -oE 'monarchmoney-enhanced==[0-9]+\.[0-9]+\.[0-9]+' | cut -d= -f3 > /tmp/latest_version.txt || true
+        
+        # Fallback: Try to get from PyPI API
+        if [ ! -s /tmp/latest_version.txt ]; then
+          curl -s https://pypi.org/pypi/monarchmoney-enhanced/json | python3 -c "import sys, json; print(json.load(sys.stdin)['info']['version'])" > /tmp/latest_version.txt || echo "0.0.0" > /tmp/latest_version.txt
+        fi
+        
+        LATEST=$(cat /tmp/latest_version.txt)
         echo "latest=$LATEST" >> $GITHUB_OUTPUT
 
     - name: Compare versions and update if needed
@@ -144,6 +156,18 @@ jobs:
         body_path: release_notes.md
         draft: false
         prerelease: false
+
+    - name: Build package
+      if: steps.version-check.outputs.needs_update == 'true'
+      run: |
+        uv build
+
+    - name: Publish to PyPI
+      if: steps.version-check.outputs.needs_update == 'true'
+      env:
+        UV_PUBLISH_TOKEN: ${{ secrets.PYPI_API_TOKEN }}
+      run: |
+        uv publish
 
     - name: Push changes
       if: steps.version-check.outputs.needs_update == 'true'

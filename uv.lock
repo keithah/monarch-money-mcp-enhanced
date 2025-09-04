@@ -540,7 +540,11 @@ wheels = [
 
 [[package]]
 name = "monarch-money-mcp-enhanced"
+<<<<<<< HEAD
 version = "0.5.0"
+=======
+version = "0.3.4"
+>>>>>>> 157e42b (Fix GitHub Actions workflow and add PyPI publishing)
 source = { virtual = "." }
 dependencies = [
     { name = "mcp" },
