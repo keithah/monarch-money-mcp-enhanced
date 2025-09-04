@@ -25,6 +25,14 @@ jobs:
     - name: Install uv
       uses: astral-sh/setup-uv@v2
 
+    - name: Enable uv cache
+      uses: actions/cache@v4
+      with:
+        path: ~/.cache/uv
+        key: ${{ runner.os }}-uv-${{ hashFiles('**/uv.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-uv-
+
     - name: Build package
       run: |
         uv build
