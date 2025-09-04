@@ -99,10 +99,10 @@ async def initialize_client():
             mm_client.load_session(str(session_file))
             # Test if session is still valid
             await mm_client.get_accounts()
-            print("Loaded existing session successfully")
+            # Loaded existing session successfully
             return
         except Exception:
-            print("Existing session invalid, logging in fresh")
+            # Existing session invalid, logging in fresh
     
     # Login with credentials
     if mfa_secret:
@@ -112,7 +112,7 @@ async def initialize_client():
     
     # Save session for future use
     mm_client.save_session(str(session_file))
-    print("Logged in and saved session")
+    # Logged in and saved session
 
 
 @server.list_tools()
@@ -202,9 +202,9 @@ async def main():
     # Initialize the MonarchMoney client
     try:
         await initialize_client()
-        print(f"Initialized client with {len(await list_tools())} dynamic tools")
+        # Initialized client with dynamic tools
     except Exception as e:
-        print(f"Failed to initialize MonarchMoney client: {e}")
+        # Failed to initialize MonarchMoney client - exit silently for MCP
         return
     
     # Run the MCP server
@@ -214,7 +214,7 @@ async def main():
             write_stream,
             InitializationOptions(
                 server_name="monarch-money-mcp-enhanced",
-                server_version="0.5.1",
+                server_version="0.5.2",
                 capabilities=ServerCapabilities(
                     tools={}
                 )
