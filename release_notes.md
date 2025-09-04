@@ -1,15 +1,15 @@
-## monarch-money-mcp-enhanced v0.3.6
+## monarch-money-mcp-enhanced v0.5.0
 
 This release automatically synchronizes the MCP server version with the latest `monarchmoney-enhanced` library.
 
 ### Changes
-- Updated `monarchmoney-enhanced` from `` to `0.3.6`
-- MCP server version synchronized to `0.3.6`
+- Updated `monarchmoney-enhanced` from `` to `0.5.0`
+- MCP server version synchronized to `0.5.0`
 - All MonarchMoney methods are automatically exposed as MCP tools
 - No manual intervention required - the server dynamically adapts to library changes
 
 ### New Features
-Any new methods added to `monarchmoney-enhanced` v0.3.6 are automatically available as MCP tools.
+Any new methods added to `monarchmoney-enhanced` v0.5.0 are automatically available as MCP tools.
 
 ### Installation
 Update your Claude Desktop configuration:
