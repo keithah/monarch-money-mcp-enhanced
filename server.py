@@ -214,7 +214,7 @@ async def main():
             write_stream,
             InitializationOptions(
                 server_name="monarch-money-mcp-enhanced",
-                server_version="0.5.0",
+                server_version="0.5.1",
                 capabilities=ServerCapabilities(
                     tools={}
                 )
@@ -222,5 +222,9 @@ async def main():
         )
 
 
-if __name__ == "__main__":
+def run():
+    """Entry point for the MCP server"""
     asyncio.run(main())
+
+if __name__ == "__main__":
+    run()

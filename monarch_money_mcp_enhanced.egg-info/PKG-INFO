@@ -1,6 +1,6 @@
 Metadata-Version: 2.4
 Name: monarch-money-mcp-enhanced
-Version: 0.4.0
+Version: 0.5.1
 Summary: Enhanced MCP server for MonarchMoney financial data access with dynamic tool generation
 Requires-Python: >=3.10
 Description-Content-Type: text/markdown
