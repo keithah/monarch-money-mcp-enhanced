@@ -12,9 +12,16 @@ venv/
 # uv
 .venv/
 
-# Session files
+# Session files and secrets
 .monarchmoney_session
 .mm/
+*.pickle
+*.session
+*.secret
+*.token
+*.key
+*_session.*
+session_*
 
 # IDE
 .vscode/
