@@ -61,3 +61,15 @@ UnicodeDecodeError: 'utf-8' codec can't decode byte 0x80 in position 0: invalid 
 2025-09-03 22:10:15,556 - AuthenticationService - INFO - info:62 - Session loaded successfully - {'session_file': '.mm/mm_session.pickle'}
 2025-09-03 22:10:15,557 - monarchmoney - INFO - info:62 - Session saved securely - {'session_file': '/Users/keith/.monarchmoney_session'}
 2025-09-03 22:10:15,557 - monarchmoney - INFO - info:62 - Session saved securely - {'session_file': '/Users/keith/.monarchmoney_session'}
+2025-09-03 22:19:39,591 - monarchmoney - WARNING - warning:71 - Using default password for session encryption. Consider providing explicit password for better security.
+2025-09-03 22:19:39,617 - AuthenticationService - INFO - info:62 - Loading saved session - {'session_file': '.mm/mm_session.pickle'}
+2025-09-03 22:19:39,617 - monarchmoney - WARNING - warning:71 - Using default password for session encryption. Consider providing explicit password for better security.
+2025-09-03 22:19:39,644 - AuthenticationService - INFO - info:62 - Session loaded successfully - {'session_file': '.mm/mm_session.pickle'}
+2025-09-03 22:19:39,644 - SettingsService - INFO - info:64 - Fetching user profile information
+2025-09-03 22:19:40,103 - AccountService - INFO - info:64 - Fetching accounts
+2025-09-04 08:44:17,163 - monarchmoney - WARNING - warning:71 - Using default password for session encryption. Consider providing explicit password for better security.
+2025-09-04 08:44:17,218 - AuthenticationService - INFO - info:62 - Loading saved session - {'session_file': '.mm/mm_session.pickle'}
+2025-09-04 08:44:17,218 - monarchmoney - WARNING - warning:71 - Using default password for session encryption. Consider providing explicit password for better security.
+2025-09-04 08:44:17,241 - AuthenticationService - INFO - info:62 - Session loaded successfully - {'session_file': '.mm/mm_session.pickle'}
+2025-09-04 08:44:17,241 - SettingsService - INFO - info:64 - Fetching user profile information
+2025-09-04 08:44:17,882 - AccountService - INFO - info:64 - Fetching accounts
