@@ -540,11 +540,7 @@ wheels = [
 
 [[package]]
 name = "monarch-money-mcp-enhanced"
-<<<<<<< HEAD
-version = "0.5.0"
-=======
-version = "0.3.4"
->>>>>>> 157e42b (Fix GitHub Actions workflow and add PyPI publishing)
+version = "0.6.0"
 source = { virtual = "." }
 dependencies = [
     { name = "mcp" },
@@ -554,12 +550,12 @@ dependencies = [
 [package.metadata]
 requires-dist = [
     { name = "mcp", specifier = ">=1.9.4" },
-    { name = "monarchmoney-enhanced" },
+    { name = "monarchmoney-enhanced", specifier = ">=0.6.0" },
 ]
 
 [[package]]
 name = "monarchmoney-enhanced"
-version = "0.5.0"
+version = "0.6.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "aiohttp" },
@@ -567,9 +563,9 @@ dependencies = [
     { name = "gql" },
     { name = "oathtool" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/b2/29/4385b64daf6b70f2a0e1a37b6f94c5cf00220a415454a93beabbcba34312/monarchmoney_enhanced-0.5.0.tar.gz", hash = "sha256:c52bfd419d76305d6ddae6acc668c9c2ac9cf5b31670731c6b8221adecc4db77", size = 96054, upload-time = "2025-09-04T03:40:11.708Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/b4/63/9df9e71ee2620db03e8f41211ac4c4b8dff3075f2ac4565ca8cb80299711/monarchmoney_enhanced-0.6.0.tar.gz", hash = "sha256:751a895c71167b9507948e287c79cf9b8f4b128331e8adb62ca28a26ca9eabbf", size = 96927, upload-time = "2025-09-04T05:05:26.352Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/51/50/b2c6cf24afd6a4378410cbfc8dbceedf52f7281a1bcf84df6f13cc9dee9f/monarchmoney_enhanced-0.5.0-py3-none-any.whl", hash = "sha256:2089daafe5eb690a743951ada8ab1f48a23335e8f899890b90e9d52d9d625410", size = 86564, upload-time = "2025-09-04T03:40:10.507Z" },
+    { url = "https://files.pythonhosted.org/packages/51/14/93f8099a281cacca171dbeb4789a7821ae1bd475ae02b0a29c8c351c74db/monarchmoney_enhanced-0.6.0-py3-none-any.whl", hash = "sha256:7878f883b2b6f9aa703a38795a623955d0c4ff0cb2c5aa7184989825422dc2a6", size = 87426, upload-time = "2025-09-04T05:05:25.272Z" },
 ]
 
 [[package]]
