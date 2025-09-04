@@ -1,0 +1,2 @@
+[console_scripts]
+monarch-money-mcp-enhanced = server:main

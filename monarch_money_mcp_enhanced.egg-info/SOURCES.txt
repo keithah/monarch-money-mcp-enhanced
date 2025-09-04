@@ -1,0 +1,9 @@
+README.md
+pyproject.toml
+server.py
+monarch_money_mcp_enhanced.egg-info/PKG-INFO
+monarch_money_mcp_enhanced.egg-info/SOURCES.txt
+monarch_money_mcp_enhanced.egg-info/dependency_links.txt
+monarch_money_mcp_enhanced.egg-info/entry_points.txt
+monarch_money_mcp_enhanced.egg-info/requires.txt
+monarch_money_mcp_enhanced.egg-info/top_level.txt

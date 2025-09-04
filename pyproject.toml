@@ -11,3 +11,6 @@ dependencies = [
 
 [project.scripts]
 monarch-money-mcp-enhanced = "server:main"
+
+[tool.setuptools]
+py-modules = ["server"]
