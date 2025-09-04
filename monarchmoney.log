@@ -51,3 +51,13 @@ UnicodeDecodeError: 'utf-8' codec can't decode byte 0x80 in position 0: invalid 
 2025-09-03 22:09:39,742 - monarchmoney - WARNING - warning:71 - Using default password for session encryption. Consider providing explicit password for better security.
 2025-09-03 22:09:39,768 - AuthenticationService - INFO - info:62 - Session saved successfully - {'session_file': '.mm/mm_session.pickle'}
 2025-09-03 22:09:39,768 - AccountService - INFO - info:64 - Fetching accounts
+2025-09-03 22:10:15,502 - monarchmoney - WARNING - warning:71 - Using default password for session encryption. Consider providing explicit password for better security.
+2025-09-03 22:10:15,502 - monarchmoney - WARNING - warning:71 - Using default password for session encryption. Consider providing explicit password for better security.
+2025-09-03 22:10:15,528 - AuthenticationService - INFO - info:62 - Loading saved session - {'session_file': '.mm/mm_session.pickle'}
+2025-09-03 22:10:15,528 - AuthenticationService - INFO - info:62 - Loading saved session - {'session_file': '.mm/mm_session.pickle'}
+2025-09-03 22:10:15,528 - monarchmoney - WARNING - warning:71 - Using default password for session encryption. Consider providing explicit password for better security.
+2025-09-03 22:10:15,528 - monarchmoney - WARNING - warning:71 - Using default password for session encryption. Consider providing explicit password for better security.
+2025-09-03 22:10:15,556 - AuthenticationService - INFO - info:62 - Session loaded successfully - {'session_file': '.mm/mm_session.pickle'}
+2025-09-03 22:10:15,556 - AuthenticationService - INFO - info:62 - Session loaded successfully - {'session_file': '.mm/mm_session.pickle'}
+2025-09-03 22:10:15,557 - monarchmoney - INFO - info:62 - Session saved securely - {'session_file': '/Users/keith/.monarchmoney_session'}
+2025-09-03 22:10:15,557 - monarchmoney - INFO - info:62 - Session saved securely - {'session_file': '/Users/keith/.monarchmoney_session'}
