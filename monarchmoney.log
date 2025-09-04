@@ -73,3 +73,24 @@ UnicodeDecodeError: 'utf-8' codec can't decode byte 0x80 in position 0: invalid 
 2025-09-04 08:44:17,241 - AuthenticationService - INFO - info:62 - Session loaded successfully - {'session_file': '.mm/mm_session.pickle'}
 2025-09-04 08:44:17,241 - SettingsService - INFO - info:64 - Fetching user profile information
 2025-09-04 08:44:17,882 - AccountService - INFO - info:64 - Fetching accounts
+2025-09-04 08:54:04,673 - monarchmoney - WARNING - warning:71 - Using default password for session encryption. Consider providing explicit password for better security.
+2025-09-04 08:54:04,700 - AuthenticationService - INFO - info:62 - Attempting user login - {'email': 'keith@hadm.net'}
+2025-09-04 08:54:06,552 - AuthenticationService - INFO - info:62 - Login successful - {'email': 'keith@hadm.net'}
+2025-09-04 08:54:06,553 - monarchmoney - WARNING - warning:71 - Using default password for session encryption. Consider providing explicit password for better security.
+2025-09-04 08:54:06,587 - AuthenticationService - INFO - info:62 - Session saved successfully - {'session_file': '.mm/mm_session.pickle'}
+2025-09-04 08:54:06,587 - AccountService - INFO - info:64 - Fetching accounts
+2025-09-04 08:55:27,626 - monarchmoney - WARNING - warning:71 - Using default password for session encryption. Consider providing explicit password for better security.
+2025-09-04 08:55:27,652 - AuthenticationService - INFO - info:62 - Loading saved session - {'session_file': '.mm/mm_session.pickle'}
+2025-09-04 08:55:27,653 - monarchmoney - WARNING - warning:71 - Using default password for session encryption. Consider providing explicit password for better security.
+2025-09-04 08:55:27,675 - AuthenticationService - INFO - info:62 - Session loaded successfully - {'session_file': '.mm/mm_session.pickle'}
+2025-09-04 08:55:27,675 - AccountService - INFO - info:64 - Fetching accounts
+2025-09-04 09:13:35,357 - monarchmoney - WARNING - warning:71 - Using default password for session encryption. Consider providing explicit password for better security.
+2025-09-04 09:13:35,492 - AuthenticationService - INFO - info:62 - Loading saved session - {'session_file': '.mm/mm_session.pickle'}
+2025-09-04 09:13:35,493 - monarchmoney - WARNING - warning:71 - Using default password for session encryption. Consider providing explicit password for better security.
+2025-09-04 09:13:35,551 - AuthenticationService - INFO - info:62 - Session loaded successfully - {'session_file': '.mm/mm_session.pickle'}
+2025-09-04 09:13:35,551 - AccountService - INFO - info:64 - Fetching accounts
+2025-09-04 09:13:51,812 - monarchmoney - WARNING - warning:71 - Using default password for session encryption. Consider providing explicit password for better security.
+2025-09-04 09:13:51,881 - AuthenticationService - INFO - info:62 - Loading saved session - {'session_file': '.mm/mm_session.pickle'}
+2025-09-04 09:13:51,881 - monarchmoney - WARNING - warning:71 - Using default password for session encryption. Consider providing explicit password for better security.
+2025-09-04 09:13:51,950 - AuthenticationService - INFO - info:62 - Session loaded successfully - {'session_file': '.mm/mm_session.pickle'}
+2025-09-04 09:13:51,951 - AccountService - INFO - info:64 - Fetching accounts
