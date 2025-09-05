@@ -14,7 +14,7 @@ from mcp.server.stdio import stdio_server
 from mcp.server.models import InitializationOptions
 from mcp.types import ServerCapabilities
 from mcp.types import Tool, TextContent
-from monarchmoney import MonarchMoney
+from monarchmoney import MonarchMoney, OptimizedMonarchMoney
 
 
 def convert_dates_to_strings(obj: Any) -> Any:
@@ -76,7 +76,7 @@ def get_method_schema(method) -> Dict[str, Any]:
 
 # Initialize the MCP server
 server = Server("monarch-money-mcp-enhanced")
-mm_client: Optional[MonarchMoney] = None
+mm_client: Optional[OptimizedMonarchMoney] = None
 session_file = Path.home() / ".monarchmoney_session"
 
 # Change to a writable directory for session storage
@@ -97,7 +97,18 @@ async def initialize_client():
     if not email or not password:
         raise ValueError("MONARCH_EMAIL and MONARCH_PASSWORD environment variables are required")
     
-    mm_client = MonarchMoney()
+    # Use OptimizedMonarchMoney with performance optimizations enabled
+    mm_client = OptimizedMonarchMoney(
+        cache_enabled=True,
+        deduplicate_requests=True,
+        cache_ttl_overrides={
+            "GetAccounts": 600,  # Cache accounts for 10 minutes
+            "GetTransactions": 300,  # Cache transactions for 5 minutes
+            "GetCategories": 900,  # Cache categories for 15 minutes
+            "GetGoals": 600,  # Cache goals for 10 minutes
+            "GetBudget": 300,  # Cache budget for 5 minutes
+        }
+    )
     
     # Try to load existing session first
     if session_file.exists() and not os.getenv("MONARCH_FORCE_LOGIN"):
@@ -223,7 +234,7 @@ async def main():
             write_stream,
             InitializationOptions(
                 server_name="monarch-money-mcp-enhanced",
-                server_version="0.7.0",
+                server_version="0.8.0",
                 capabilities=ServerCapabilities(
                     tools={}
                 )
