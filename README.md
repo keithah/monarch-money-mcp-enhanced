@@ -1,16 +1,22 @@
-# Monarch Money MCP Server Enhanced
+# 🏦 Monarch Money MCP Server Enhanced
 
-A dynamic MCP (Model Context Protocol) server that automatically exposes **all** methods from the `monarchmoney-enhanced` library as MCP tools. No manual updates needed when the library adds new features!
+## 🎉 Claude Desktop Extension - One-Click Installation!
 
-Enhanced with performance optimizations from `monarchmoney-enhanced` v0.8.0 including 80% reduction in API calls through intelligent caching.
+A dynamic MCP (Model Context Protocol) server that automatically exposes **all** methods from the `monarchmoney-enhanced` library as MCP tools. Now available as a **Claude Desktop Extension** for seamless one-click installation!
+
+✨ **NEW in v0.9.2**: Install like a browser extension - just download and double-click the `.mcpb` file!
+
+Enhanced with performance optimizations including 80% reduction in API calls through intelligent caching and auto-updating capabilities.
 
 ## Key Features
 
+🎯 **One-Click Installation**: Install as a Claude Desktop Extension - no configuration files needed!  
 🔄 **Fully Dynamic**: Automatically discovers and exposes all MonarchMoney methods as tools  
-🚀 **Auto-Updating**: GitHub Actions automatically release new versions when `monarchmoney-enhanced` updates  
+🚀 **Auto-Updating**: GitHub Actions automatically release new versions with MCPB bundles  
 📊 **Complete API Access**: Every method in the library becomes an MCP tool automatically  
 🛠️ **Smart Schema Generation**: Automatically generates parameter schemas from method signatures  
 ⚡ **Performance Optimized**: 80% reduction in API calls, 90% cache hit rate, intelligent caching with TTL  
+💫 **User-Friendly Setup**: Configure credentials through Claude Desktop's intuitive interface
 
 ## Automatically Available Features
 
@@ -28,6 +34,30 @@ Since this server dynamically exposes all `monarchmoney-enhanced` methods, you g
 
 ## Installation
 
+### Option 1: 🚀 Claude Desktop Extension (Recommended)
+
+**⚡ FASTEST & EASIEST INSTALLATION ⚡**
+
+Transform your installation experience from complex manual setup to Chrome extension-style simplicity:
+
+1. **Download the Extension**: Get the latest `monarch-money-enhanced.mcpb` file from the [Releases page](https://github.com/keithah/monarch-money-mcp-enhanced/releases)
+
+2. **Install in Claude Desktop**: Double-click the `.mcpb` file to automatically install in Claude Desktop
+
+3. **Configure**: Enter your Monarch Money credentials in Claude Desktop settings:
+   - **Email**: Your Monarch Money account email
+   - **Password**: Your Monarch Money account password  
+   - **MFA Secret** (optional): Your 2FA secret key if enabled
+   - **Force Login** (optional): Force fresh login instead of cached session
+
+4. **Enable**: Enable the extension in Claude Desktop settings
+
+**That's it!** 🎉 No manual configuration files, no path setup, no terminal commands required!
+
+---
+
+### Option 2: 🛠️ Manual Installation (Advanced Users)
+
 1. Clone or download this MCP server
 2. Install dependencies:
    ```bash
@@ -35,9 +65,7 @@ Since this server dynamically exposes all `monarchmoney-enhanced` methods, you g
    uv sync
    ```
 
-## Configuration
-
-Add the server to your `.mcp.json` configuration file:
+3. Add the server to your `.mcp.json` configuration file:
 
 ```json
 {
@@ -163,6 +191,26 @@ This repository includes GitHub Actions that automatically:
 2. **Auto-Release**: Creates new releases when the library updates  
 3. **Zero Maintenance**: No manual intervention needed to get new features
 4. **Dependency Management**: Dependabot keeps other dependencies secure
+5. **MCPB Generation**: Automatically creates `.mcpb` extension bundles for each release
+6. **Extension Distribution**: Ready-to-install bundles available in GitHub Releases
+
+## Building MCPB Extensions (For Developers)
+
+If you want to create your own MCPB bundle:
+
+1. **Install MCPB CLI**:
+   ```bash
+   npm install -g @anthropic-ai/mcpb
+   ```
+
+2. **Generate Bundle**:
+   ```bash
+   mcpb pack
+   ```
+
+3. **Output**: The CLI generates `monarch-money-enhanced-VERSION.mcpb` ready for distribution
+
+The `manifest.json` file defines the extension configuration and is automatically used by the MCPB CLI.
 
 ## Credits
 

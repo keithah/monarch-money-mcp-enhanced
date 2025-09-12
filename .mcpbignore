@@ -1,0 +1,38 @@
+# Log files
+*.log
+monarchmoney.log
+
+# Git and version control
+.git/
+.gitignore
+
+# Build artifacts
+*.egg-info/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# GitHub workflows (not needed in bundle)
+.github/
+
+# Documentation (include README but exclude others)
+*.md
+!README.md
+
+# Version tracking
+current_version.txt
+
+# Development files
+.python-version
