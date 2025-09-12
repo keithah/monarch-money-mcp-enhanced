@@ -27,8 +27,17 @@ jobs:
       with:
         python-version: '3.11'
 
+    - name: Set up Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+
     - name: Install uv
       uses: astral-sh/setup-uv@v2
+
+    - name: Install MCPB CLI
+      run: |
+        npm install -g @anthropic-ai/mcpb
 
     - name: Enable uv cache
       uses: actions/cache@v4
@@ -82,6 +91,13 @@ jobs:
         NEW_VERSION="${{ steps.version-check.outputs.new_version }}"
         sed -i "s/version = \".*\"/version = \"$NEW_VERSION\"/" pyproject.toml
         
+        # Update version in manifest.json if it exists
+        if [ -f "manifest.json" ]; then
+          sed -i "s/\"version\": \".*\"/\"version\": \"$NEW_VERSION\"/" manifest.json
+          # Ensure dxt_version is set to 0.1 for MCPB compatibility
+          sed -i "s/\"manifest_version\": \".*\"/\"dxt_version\": \"0.1\"/" manifest.json
+        fi
+        
         # Update server version in server.py
         sed -i "s/server_version=\".*\"/server_version=\"$NEW_VERSION\"/" server.py
         
@@ -105,6 +121,18 @@ jobs:
         print(f'✅ Found {len(methods)} methods in MonarchMoney class')
         "
 
+    - name: Generate MCPB bundle
+      if: steps.version-check.outputs.needs_update == 'true'
+      run: |
+        # Generate the MCPB bundle if manifest.json exists
+        if [ -f "manifest.json" ]; then
+          echo "📦 Generating MCPB bundle..."
+          mcpb pack
+          ls -la *.mcpb
+        else
+          echo "⚠️ No manifest.json found, skipping MCPB generation"
+        fi
+
     - name: Generate release notes
       if: steps.version-check.outputs.needs_update == 'true'
       id: release-notes
@@ -127,6 +155,14 @@ jobs:
         Any new methods added to \`monarchmoney-enhanced\` v${NEW_VERSION} are automatically available as MCP tools.
         
         ### Installation
+        
+        #### Option 1: Claude Desktop Extension (Recommended)
+        1. Download the \`monarch-money-enhanced-${NEW_VERSION}.mcpb\` file from this release
+        2. Double-click the \`.mcpb\` file to install in Claude Desktop
+        3. Configure your Monarch Money credentials in Claude Desktop settings
+        4. Enable the extension
+        
+        #### Option 2: Manual Installation  
         Update your Claude Desktop configuration:
         \`\`\`json
         {
@@ -155,15 +191,23 @@ jobs:
 
     - name: Create tag and release
       if: steps.version-check.outputs.needs_update == 'true'
-      uses: actions/create-release@v1
+      run: |
+        NEW_VERSION="${{ steps.version-check.outputs.new_version }}"
+        git tag "v$NEW_VERSION"
+        
+        # Create release with MCPB bundle if it exists
+        if [ -f "monarch-money-enhanced-$NEW_VERSION.mcpb" ]; then
+          gh release create "v$NEW_VERSION" \
+            --title "Auto Release v$NEW_VERSION" \
+            --notes-file release_notes.md \
+            "monarch-money-enhanced-$NEW_VERSION.mcpb"
+        else
+          gh release create "v$NEW_VERSION" \
+            --title "Auto Release v$NEW_VERSION" \
+            --notes-file release_notes.md
+        fi
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        tag_name: v${{ steps.version-check.outputs.new_version }}
-        release_name: "Auto Release v${{ steps.version-check.outputs.new_version }}"
-        body_path: release_notes.md
-        draft: false
-        prerelease: false
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Build package
       if: steps.version-check.outputs.needs_update == 'true'
