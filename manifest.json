@@ -18,7 +18,11 @@
       "command": "${__dirname}/.venv/bin/python",
       "args": ["${__dirname}/server.py"],
       "env": {
-        "PYTHONPATH": "${__dirname}"
+        "PYTHONPATH": "${__dirname}",
+        "MONARCH_EMAIL": "${MONARCH_EMAIL}",
+        "MONARCH_PASSWORD": "${MONARCH_PASSWORD}",
+        "MONARCH_MFA_SECRET": "${MONARCH_MFA_SECRET}",
+        "MONARCH_FORCE_LOGIN": "${MONARCH_FORCE_LOGIN}"
       }
     }
   },
