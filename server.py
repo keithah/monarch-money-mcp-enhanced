@@ -2,6 +2,7 @@
 """Dynamic MonarchMoney MCP Server - Automatically exposes all MonarchMoney methods as MCP tools."""
 
 import os
+import sys
 import asyncio
 import json
 import inspect
@@ -97,6 +98,48 @@ async def initialize_client():
     if not email or not password:
         raise ValueError("MONARCH_EMAIL and MONARCH_PASSWORD environment variables are required")
     
+    # Clean up any corrupted session files before initialization
+    force_login = os.getenv("MONARCH_FORCE_LOGIN", "").lower() in ("true", "1", "yes")
+    
+    # Always check for and clean up corrupted .mm session files
+    try:
+        mm_dir = Path(".mm")
+        if mm_dir.exists():
+            # Check if the session file is corrupted
+            session_pickle = mm_dir / "mm_session.pickle"
+            if session_pickle.exists():
+                try:
+                    # Try to read the file to see if it's corrupted
+                    with open(session_pickle, 'r') as f:
+                        content = f.read()
+                        if not content.strip():  # Empty file
+                            print("Found empty session file, cleaning up", file=sys.stderr)
+                            raise ValueError("Empty session file")
+                        json.loads(content)  # Try to parse as JSON
+                except (json.JSONDecodeError, ValueError, UnicodeDecodeError) as e:
+                    print(f"Found corrupted session file, cleaning up: {e}", file=sys.stderr)
+                    import shutil
+                    shutil.rmtree(mm_dir)
+                    if session_file.exists():
+                        session_file.unlink()
+    except Exception as e:
+        print(f"Error during session cleanup: {e}", file=sys.stderr)
+    
+    # Force clean if requested
+    if force_login:
+        try:
+            if session_file.exists():
+                session_file.unlink()
+        except:
+            pass
+        try:
+            import shutil
+            mm_dir = Path(".mm")
+            if mm_dir.exists():
+                shutil.rmtree(mm_dir)
+        except:
+            pass
+    
     # Use OptimizedMonarchMoney with performance optimizations enabled
     mm_client = OptimizedMonarchMoney(
         cache_enabled=True,
@@ -110,17 +153,31 @@ async def initialize_client():
         }
     )
     
-    # Try to load existing session first
-    if session_file.exists() and not os.getenv("MONARCH_FORCE_LOGIN"):
+    # Try to load existing session first, but handle corrupted session files
+    force_login = os.getenv("MONARCH_FORCE_LOGIN", "").lower() in ("true", "1", "yes")
+    
+    if session_file.exists() and not force_login:
         try:
             mm_client.load_session(str(session_file))
             # Test if session is still valid
             await mm_client.get_accounts()
             # Loaded existing session successfully
             return
-        except Exception:
-            # Existing session invalid, logging in fresh
-            pass
+        except Exception as e:
+            # Existing session invalid or corrupted, clean up and login fresh
+            print(f"Session load failed, cleaning up: {e}", file=sys.stderr)
+            try:
+                session_file.unlink()  # Remove corrupted session file
+            except:
+                pass
+            # Remove .mm directory if it exists (contains cached session data)
+            try:
+                import shutil
+                mm_dir = Path(".mm")
+                if mm_dir.exists():
+                    shutil.rmtree(mm_dir)
+            except:
+                pass
     
     # Login with credentials
     if mfa_secret:
