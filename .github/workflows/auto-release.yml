@@ -194,29 +194,38 @@ jobs:
       run: |
         NEW_VERSION="${{ steps.version-check.outputs.new_version }}"
 
-        # Check if tag already exists locally or remotely
+        # Check if release already exists on remote
+        if gh release view "v$NEW_VERSION" >/dev/null 2>&1; then
+          echo "Release v$NEW_VERSION already exists, skipping..."
+          exit 0
+        fi
+
+        # Check if tag already exists locally or remotely and clean up
         if git rev-parse "v$NEW_VERSION" >/dev/null 2>&1; then
           echo "Tag v$NEW_VERSION already exists locally, deleting it..."
           git tag -d "v$NEW_VERSION"
         fi
 
         if git ls-remote --tags origin "v$NEW_VERSION" | grep -q "v$NEW_VERSION"; then
-          echo "Tag v$NEW_VERSION already exists on remote, skipping release..."
-          exit 0
+          echo "Tag v$NEW_VERSION already exists on remote, deleting it..."
+          git push --delete origin "v$NEW_VERSION" || true
         fi
 
-        git tag "v$NEW_VERSION"
+        # Create release with target commit specified to avoid conflicts
+        COMMIT_SHA=$(git rev-parse HEAD)
 
         # Create release with MCPB bundle if it exists
         if [ -f "monarch-money-enhanced-$NEW_VERSION.mcpb" ]; then
           gh release create "v$NEW_VERSION" \
             --title "Auto Release v$NEW_VERSION" \
             --notes-file release_notes.md \
+            --target "$COMMIT_SHA" \
             "monarch-money-enhanced-$NEW_VERSION.mcpb"
         else
           gh release create "v$NEW_VERSION" \
             --title "Auto Release v$NEW_VERSION" \
-            --notes-file release_notes.md
+            --notes-file release_notes.md \
+            --target "$COMMIT_SHA"
         fi
       env:
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -237,12 +246,8 @@ jobs:
       if: steps.version-check.outputs.needs_update == 'true'
       run: |
         git push origin main
-        # Only push tag if it doesn't already exist on remote
-        if ! git ls-remote --tags origin "v${{ steps.version-check.outputs.new_version }}" | grep -q "v${{ steps.version-check.outputs.new_version }}"; then
-          git push origin v${{ steps.version-check.outputs.new_version }}
-        else
-          echo "Tag v${{ steps.version-check.outputs.new_version }} already exists on remote, skipping tag push"
-        fi
+        # Tag is created automatically by GitHub when creating the release
+        echo "Tag will be created automatically by GitHub release"
 
     - name: No update needed
       if: steps.version-check.outputs.needs_update == 'false'
