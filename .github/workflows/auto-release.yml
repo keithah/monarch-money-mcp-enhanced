@@ -193,8 +193,20 @@ jobs:
       if: steps.version-check.outputs.needs_update == 'true'
       run: |
         NEW_VERSION="${{ steps.version-check.outputs.new_version }}"
+
+        # Check if tag already exists locally or remotely
+        if git rev-parse "v$NEW_VERSION" >/dev/null 2>&1; then
+          echo "Tag v$NEW_VERSION already exists locally, deleting it..."
+          git tag -d "v$NEW_VERSION"
+        fi
+
+        if git ls-remote --tags origin "v$NEW_VERSION" | grep -q "v$NEW_VERSION"; then
+          echo "Tag v$NEW_VERSION already exists on remote, skipping release..."
+          exit 0
+        fi
+
         git tag "v$NEW_VERSION"
-        
+
         # Create release with MCPB bundle if it exists
         if [ -f "monarch-money-enhanced-$NEW_VERSION.mcpb" ]; then
           gh release create "v$NEW_VERSION" \
@@ -225,7 +237,12 @@ jobs:
       if: steps.version-check.outputs.needs_update == 'true'
       run: |
         git push origin main
-        git push origin v${{ steps.version-check.outputs.new_version }}
+        # Only push tag if it doesn't already exist on remote
+        if ! git ls-remote --tags origin "v${{ steps.version-check.outputs.new_version }}" | grep -q "v${{ steps.version-check.outputs.new_version }}"; then
+          git push origin v${{ steps.version-check.outputs.new_version }}
+        else
+          echo "Tag v${{ steps.version-check.outputs.new_version }} already exists on remote, skipping tag push"
+        fi
 
     - name: No update needed
       if: steps.version-check.outputs.needs_update == 'false'
