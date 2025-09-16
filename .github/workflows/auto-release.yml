@@ -23,7 +23,7 @@ jobs:
         fetch-depth: 0
 
     - name: Set up Python
-      uses: actions/setup-python@v4
+      uses: actions/setup-python@v5
       with:
         python-version: '3.11'
 
@@ -181,13 +181,16 @@ jobs:
         \`\`\`
         EOF
 
-    - name: Commit changes
+    - name: Commit and push changes
       if: steps.version-check.outputs.needs_update == 'true'
       run: |
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
         git add .
         git commit -m "Auto-update to monarchmoney-enhanced v${{ steps.version-check.outputs.new_version }}"
+
+        # Push changes immediately to avoid conflicts
+        git push origin main
 
     - name: Create tag and release
       if: steps.version-check.outputs.needs_update == 'true'
@@ -200,22 +203,8 @@ jobs:
           exit 0
         fi
 
-        # Check if tag already exists and clean up both local and remote
-        if git ls-remote --tags origin "v$NEW_VERSION" | grep -q "v$NEW_VERSION"; then
-          echo "Tag v$NEW_VERSION already exists on remote, deleting it..."
-          git push --delete origin "v$NEW_VERSION" || true
-        fi
-
-        if git rev-parse "v$NEW_VERSION" >/dev/null 2>&1; then
-          echo "Tag v$NEW_VERSION already exists locally, deleting it..."
-          git tag -d "v$NEW_VERSION"
-        fi
-
-        # Get current commit SHA - this is what we'll tag and release
-        COMMIT_SHA=$(git rev-parse HEAD)
-        echo "Creating release v$NEW_VERSION for commit $COMMIT_SHA"
-
-        # Create release with MCPB bundle if it exists
+        # Create release directly without manual tag management
+        # GitHub will create the tag automatically when creating the release
         if [ -f "monarch-money-enhanced-$NEW_VERSION.mcpb" ]; then
           gh release create "v$NEW_VERSION" \
             --title "Auto Release v$NEW_VERSION" \
@@ -237,18 +226,16 @@ jobs:
         uv build
 
     - name: Publish to PyPI
-      if: steps.version-check.outputs.needs_update == 'true'
+      if: steps.version-check.outputs.needs_update == 'true' && secrets.PYPI_API_TOKEN != ''
       env:
         UV_PUBLISH_TOKEN: ${{ secrets.PYPI_API_TOKEN }}
       run: |
-        uv publish
-
-    - name: Push changes
-      if: steps.version-check.outputs.needs_update == 'true'
-      run: |
-        git push origin main
-        # Tag is created automatically by GitHub when creating the release
-        echo "Tag will be created automatically by GitHub release"
+        # Only publish if token is configured
+        if [ -n "$UV_PUBLISH_TOKEN" ]; then
+          uv publish
+        else
+          echo "⚠️ PYPI_API_TOKEN not configured, skipping PyPI publish"
+        fi
 
     - name: No update needed
       if: steps.version-check.outputs.needs_update == 'false'
