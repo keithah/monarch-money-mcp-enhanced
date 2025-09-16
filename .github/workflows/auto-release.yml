@@ -226,7 +226,7 @@ jobs:
         uv build
 
     - name: Publish to PyPI
-      if: steps.version-check.outputs.needs_update == 'true' && secrets.PYPI_API_TOKEN != ''
+      if: steps.version-check.outputs.needs_update == 'true'
       env:
         UV_PUBLISH_TOKEN: ${{ secrets.PYPI_API_TOKEN }}
       run: |
