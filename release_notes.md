@@ -1,20 +1,20 @@
-## monarch-money-mcp-enhanced v0.9.9
+## monarch-money-mcp-enhanced v0.10.1
 
 This release automatically synchronizes the MCP server version with the latest `monarchmoney-enhanced` library.
 
 ### Changes
-- Updated `monarchmoney-enhanced` from `0.9.8` to `0.9.9`
-- MCP server version synchronized to `0.9.9`
+- Updated `monarchmoney-enhanced` from `0.9.9` to `0.10.1`
+- MCP server version synchronized to `0.10.1`
 - All MonarchMoney methods are automatically exposed as MCP tools
 - No manual intervention required - the server dynamically adapts to library changes
 
 ### New Features
-Any new methods added to `monarchmoney-enhanced` v0.9.9 are automatically available as MCP tools.
+Any new methods added to `monarchmoney-enhanced` v0.10.1 are automatically available as MCP tools.
 
 ### Installation
 
 #### Option 1: Claude Desktop Extension (Recommended)
-1. Download the `monarch-money-enhanced-0.9.9.mcpb` file from this release
+1. Download the `monarch-money-enhanced-0.10.1.mcpb` file from this release
 2. Double-click the `.mcpb` file to install in Claude Desktop
 3. Configure your Monarch Money credentials in Claude Desktop settings
 4. Enable the extension

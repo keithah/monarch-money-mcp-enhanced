@@ -583,7 +583,7 @@ wheels = [
 
 [[package]]
 name = "monarch-money-mcp-enhanced"
-version = "0.9.9"
+version = "0.10.1"
 source = { virtual = "." }
 dependencies = [
     { name = "mcp" },
@@ -593,12 +593,12 @@ dependencies = [
 [package.metadata]
 requires-dist = [
     { name = "mcp", specifier = ">=1.9.4" },
-    { name = "monarchmoney-enhanced", specifier = ">=0.9.9" },
+    { name = "monarchmoney-enhanced", specifier = ">=0.10.1" },
 ]
 
 [[package]]
 name = "monarchmoney-enhanced"
-version = "0.9.9"
+version = "0.10.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "aiohttp" },
@@ -606,9 +606,9 @@ dependencies = [
     { name = "gql" },
     { name = "oathtool" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/f1/f5/5db99f7917f29ff9110509c7c97417ac8588e91c2f22bfb16788babb6f28/monarchmoney_enhanced-0.9.9.tar.gz", hash = "sha256:9691599d309766c2f8ee528dc001f65ac67b70fa1f067a7add6bf2981f57c611", size = 129935, upload-time = "2025-09-18T15:02:53.267Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/a7/e6/3bb88d3abf897c5620659cfcb7c5fee78dc35ccb5e5dd106e47ccddc83a4/monarchmoney_enhanced-0.10.1.tar.gz", hash = "sha256:3feb1c0273740a7a153d713c0b950669c7c6f28428d6d85970ddbec074cbbc2e", size = 131496, upload-time = "2025-09-20T23:46:13.103Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/67/49/1da287054933fa3c3b03b1aece8be34897443ec1a39ab6e4b8832907bde1/monarchmoney_enhanced-0.9.9-py3-none-any.whl", hash = "sha256:e506d3b4eef7c7628ae76f4420acef10e8bb2e24b72518a2b2d92d1e69744e8b", size = 118714, upload-time = "2025-09-18T15:02:51.926Z" },
+    { url = "https://files.pythonhosted.org/packages/68/e0/842fa05ff6b82c1f0080905f65fa25d3b3082f16865214a4c75a08ea722b/monarchmoney_enhanced-0.10.1-py3-none-any.whl", hash = "sha256:6d403906c68c37ceee20ba22fc9ec9fb9dc6a90ab48efe79977914f7d368e4d5", size = 120005, upload-time = "2025-09-20T23:46:11.808Z" },
 ]
 
 [[package]]
@@ -1195,16 +1195,16 @@ wheels = [
 
 [[package]]
 name = "uvicorn"
-version = "0.35.0"
+version = "0.36.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "click" },
     { name = "h11" },
     { name = "typing-extensions", marker = "python_full_version < '3.11'" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/5e/42/e0e305207bb88c6b8d3061399c6a961ffe5fbb7e2aa63c9234df7259e9cd/uvicorn-0.35.0.tar.gz", hash = "sha256:bc662f087f7cf2ce11a1d7fd70b90c9f98ef2e2831556dd078d131b96cc94a01", size = 78473, upload-time = "2025-06-28T16:15:46.058Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/ef/5e/f0cd46063a02fd8515f0e880c37d2657845b7306c16ce6c4ffc44afd9036/uvicorn-0.36.0.tar.gz", hash = "sha256:527dc68d77819919d90a6b267be55f0e76704dca829d34aea9480be831a9b9d9", size = 80032, upload-time = "2025-09-20T01:07:14.418Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/d2/e2/dc81b1bd1dcfe91735810265e9d26bc8ec5da45b4c0f6237e286819194c3/uvicorn-0.35.0-py3-none-any.whl", hash = "sha256:197535216b25ff9b785e29a0b79199f55222193d47f820816e7da751e9bc8d4a", size = 66406, upload-time = "2025-06-28T16:15:44.816Z" },
+    { url = "https://files.pythonhosted.org/packages/96/06/5cc0542b47c0338c1cb676b348e24a1c29acabc81000bced518231dded6f/uvicorn-0.36.0-py3-none-any.whl", hash = "sha256:6bb4ba67f16024883af8adf13aba3a9919e415358604ce46780d3f9bdc36d731", size = 67675, upload-time = "2025-09-20T01:07:12.984Z" },
 ]
 
 [[package]]
