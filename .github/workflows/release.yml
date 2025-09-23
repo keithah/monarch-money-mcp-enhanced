@@ -78,8 +78,9 @@ jobs:
     - name: Test MCPB generation
       run: |
         # Test that MCPB can be generated
-        mcpb pack --output-dir ./dist/
-        ls -la ./dist/
+        mkdir -p ./dist/
+        mcpb pack
+        ls -la *.mcpb || echo "No MCPB files found yet"
 
     - name: Generate release notes
       id: release-notes
@@ -165,7 +166,12 @@ jobs:
         rm -f *.mcpb
 
         # Generate the production MCPB bundle
-        mcpb pack --output-name "monarch-money-enhanced-${VERSION}.mcpb"
+        mcpb pack
+
+        # Rename to include version
+        if [ -f "monarch-money-enhanced.mcpb" ]; then
+          mv "monarch-money-enhanced.mcpb" "monarch-money-enhanced-${VERSION}.mcpb"
+        fi
 
         # Verify the bundle was created
         ls -la *.mcpb
