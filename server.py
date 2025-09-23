@@ -55,9 +55,13 @@ def get_method_schema(method) -> Dict[str, Any]:
             elif param.annotation == dict:
                 prop["type"] = "object"
         
-        # Handle date parameters
+        # Handle date parameters and special optimizations
         if 'date' in name.lower():
             prop["description"] = f"{name.replace('_', ' ').title()} in YYYY-MM-DD format"
+        elif name == "detail_level":
+            prop["type"] = "string"
+            prop["enum"] = ["basic", "balance", "full"]
+            prop["description"] = "Account detail level: 'basic' (minimal fields), 'balance' (with balances), 'full' (all fields)"
         else:
             prop["description"] = f"{name.replace('_', ' ').title()}"
         
@@ -140,16 +144,24 @@ async def initialize_client():
         except:
             pass
     
-    # Use OptimizedMonarchMoney with performance optimizations enabled
+    # Use OptimizedMonarchMoney with enhanced performance optimizations
     mm_client = OptimizedMonarchMoney(
         cache_enabled=True,
         deduplicate_requests=True,
         cache_ttl_overrides={
-            "GetAccounts": 600,  # Cache accounts for 10 minutes
-            "GetTransactions": 300,  # Cache transactions for 5 minutes
-            "GetCategories": 900,  # Cache categories for 15 minutes
+            "GetAccounts": 240,  # Cache accounts for 4 minutes (optimized)
+            "GetTransactions": 120,  # Cache transactions for 2 minutes (optimized)
+            "GetCategories": 604800,  # Cache categories for 7 days (static data)
             "GetGoals": 600,  # Cache goals for 10 minutes
             "GetBudget": 300,  # Cache budget for 5 minutes
+            "GetMerchants": 14400,  # Cache merchants for 4 hours (optimized)
+            "GetAccountTypes": 604800,  # Cache account types for 7 days (static)
+            "GetInstitutions": 86400,  # Cache institutions for 1 day (semi-static)
+            "GetUserProfile": 86400,  # Cache user profile for 1 day
+            "GetSettings": 86400,  # Cache settings for 1 day
+            "GetRecurringTransactions": 3600,  # Cache recurring transactions for 1 hour
+            "GetHoldings": 300,  # Cache holdings for 5 minutes
+            "GetNetWorthHistory": 1800,  # Cache net worth history for 30 minutes
         }
     )
     
@@ -209,8 +221,9 @@ async def list_tools() -> List[Tool]:
             
         # Skip certain methods that aren't useful as tools
         skip_methods = {
-            'load_session', 'save_session', 'delete_session', 'set_token', 
-            'set_timeout', 'multi_factor_authenticate', 'login', 'interactive_login'
+            'load_session', 'save_session', 'delete_session', 'set_token',
+            'set_timeout', 'multi_factor_authenticate', 'login', 'interactive_login',
+            'get_cache_metrics', 'preload_cache'  # Performance methods exposed separately
         }
         if method_name in skip_methods:
             continue
@@ -221,13 +234,46 @@ async def list_tools() -> List[Tool]:
         
         # Generate schema
         schema = get_method_schema(method)
-        
+
+        # Add detail_level parameter to get_accounts for query variants
+        if method_name == "get_accounts":
+            schema["properties"]["detail_level"] = {
+                "type": "string",
+                "enum": ["basic", "balance", "full"],
+                "description": "Account detail level: 'basic' (minimal fields), 'balance' (with balances), 'full' (all fields). Defaults to 'full'."
+            }
+
         tools.append(Tool(
             name=method_name,
             description=description,
             inputSchema=schema
         ))
-    
+
+    # Add performance monitoring tools
+    tools.extend([
+        Tool(
+            name="get_cache_metrics",
+            description="Get cache performance metrics including hit rates and API calls saved",
+            inputSchema={"type": "object", "properties": {}, "required": [], "additionalProperties": False}
+        ),
+        Tool(
+            name="preload_cache",
+            description="Preload cache with commonly used data for improved performance",
+            inputSchema={
+                "type": "object",
+                "properties": {
+                    "context": {
+                        "type": "string",
+                        "enum": ["dashboard", "investments", "transactions", "all"],
+                        "description": "Context for cache preloading: dashboard (accounts+recent), investments (holdings), transactions (categories+merchants), all (everything)"
+                    }
+                },
+                "required": [],
+                "additionalProperties": False
+            }
+        )
+    ])
+
     return tools
 
 
@@ -238,10 +284,26 @@ async def call_tool(name: str, arguments: Dict[str, Any]) -> List[TextContent]:
         return [TextContent(type="text", text="Error: MonarchMoney client not initialized")]
     
     try:
+        # Handle performance monitoring methods
+        if name == "get_cache_metrics":
+            if hasattr(mm_client, 'get_cache_metrics'):
+                result = mm_client.get_cache_metrics()
+                return [TextContent(type="text", text=json.dumps(result, indent=2, default=str))]
+            else:
+                return [TextContent(type="text", text="Cache metrics not available")]
+
+        if name == "preload_cache":
+            if hasattr(mm_client, 'preload_cache'):
+                context = arguments.get("context", "dashboard")
+                result = await mm_client.preload_cache(context)
+                return [TextContent(type="text", text=f"Cache preloaded for context: {context}. Items loaded: {result}")]
+            else:
+                return [TextContent(type="text", text="Cache preloading not available")]
+
         # Check if method exists
         if not hasattr(mm_client, name):
             return [TextContent(type="text", text=f"Error: Method '{name}' not found")]
-        
+
         method = getattr(mm_client, name)
         if not callable(method):
             return [TextContent(type="text", text=f"Error: '{name}' is not callable")]
@@ -256,7 +318,15 @@ async def call_tool(name: str, arguments: Dict[str, Any]) -> List[TextContent]:
                     processed_args[key] = value
             else:
                 processed_args[key] = value
-        
+
+        # Use optimized query variants for get_accounts when detail_level is specified
+        if name == "get_accounts" and "detail_level" in processed_args:
+            detail_level = processed_args.pop("detail_level")
+            if detail_level == "basic":
+                method = getattr(mm_client, "get_accounts_basic", method)
+            elif detail_level == "balance":
+                method = getattr(mm_client, "get_accounts_balance_only", method)
+
         # Execute the method
         if asyncio.iscoroutinefunction(method):
             result = await method(**processed_args)
@@ -291,7 +361,7 @@ async def main():
             write_stream,
             InitializationOptions(
                 server_name="monarch-money-mcp-enhanced",
-                server_version="0.10.1",
+                server_version="0.11.0",
                 capabilities=ServerCapabilities(
                     tools={}
                 )
