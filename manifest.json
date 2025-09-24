@@ -2,7 +2,7 @@
   "dxt_version": "0.2",
   "name": "monarch-money-enhanced",
   "display_name": "Monarch Money Enhanced",
-  "version": "0.11.5",
+  "version": "0.11.6",
   "description": "Dynamic MCP server with 2-5x performance improvements. Automatically exposes all monarchmoney-enhanced methods with intelligent caching, query variants, request deduplication, and real-time performance monitoring.",
   "author": {
     "name": "Keith Herrington",

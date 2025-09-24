@@ -4,7 +4,7 @@
 import os
 import sys
 
-# Add vendor directory to path for bundled dependencies
+# Support for bundled dependencies if vendor directory exists
 script_dir = os.path.dirname(os.path.abspath(__file__))
 vendor_dir = os.path.join(script_dir, 'vendor')
 if os.path.exists(vendor_dir):
