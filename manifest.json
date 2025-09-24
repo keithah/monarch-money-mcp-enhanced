@@ -15,8 +15,8 @@
     "type": "python",
     "entry_point": "server.py",
     "mcp_config": {
-      "command": "${__dirname}/.venv/bin/python",
-      "args": ["${__dirname}/server.py"],
+      "command": "uv",
+      "args": ["--directory", "${__dirname}", "run", "python", "server.py"],
       "env": {
         "PYTHONPATH": "${__dirname}",
         "MONARCH_EMAIL": "${MONARCH_EMAIL}",

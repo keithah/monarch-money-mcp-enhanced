@@ -84,6 +84,24 @@ server = Server("monarch-money-mcp-enhanced")
 mm_client: Optional[OptimizedMonarchMoney] = None
 session_file = Path.home() / ".monarchmoney_session"
 
+# Load environment variables from .env file before changing directories
+project_dir = Path(__file__).parent
+env_file = project_dir / ".env"
+if env_file.exists():
+    print(f"📄 Loading environment from {env_file}", file=sys.stderr)
+    with open(env_file) as f:
+        for line in f:
+            line = line.strip()
+            if line and '=' in line and not line.startswith('#'):
+                key, value = line.split('=', 1)
+                # Remove quotes if present
+                value = value.strip('"\'')
+                os.environ[key] = value
+                if 'PASSWORD' in key or 'SECRET' in key:
+                    print(f"   Set {key}={'*' * len(value)}", file=sys.stderr)
+                else:
+                    print(f"   Set {key}={value}", file=sys.stderr)
+
 # Change to a writable directory for session storage
 import tempfile
 temp_dir = Path(tempfile.gettempdir()) / "monarch-mcp"
@@ -94,11 +112,13 @@ os.chdir(temp_dir)
 async def initialize_client():
     """Initialize the MonarchMoney client with authentication."""
     global mm_client
-    
+
+    # Environment variables should already be loaded from .env file at module import time
+
     email = os.getenv("MONARCH_EMAIL")
     password = os.getenv("MONARCH_PASSWORD")
     mfa_secret = os.getenv("MONARCH_MFA_SECRET")
-    
+
     if not email or not password:
         raise ValueError("MONARCH_EMAIL and MONARCH_PASSWORD environment variables are required")
     

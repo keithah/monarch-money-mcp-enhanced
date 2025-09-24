@@ -35,6 +35,10 @@ session_*
 logs/
 log/
 
+# Performance test results
+performance_test_results.json
+metrics_history.json
+
 # OS
 .DS_Store
 Thumbs.db

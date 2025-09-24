@@ -68,6 +68,8 @@ jobs:
 
     - name: Install dependencies
       run: |
+        # Ensure we're using Python 3.11 for everything
+        uv python install 3.11
         uv sync --all-extras
 
     - name: Run tests
