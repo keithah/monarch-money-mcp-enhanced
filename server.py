@@ -3,6 +3,13 @@
 
 import os
 import sys
+
+# Add vendor directory to path for bundled dependencies
+script_dir = os.path.dirname(os.path.abspath(__file__))
+vendor_dir = os.path.join(script_dir, 'vendor')
+if os.path.exists(vendor_dir):
+    sys.path.insert(0, vendor_dir)
+
 import asyncio
 import json
 import inspect

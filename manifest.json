@@ -2,7 +2,7 @@
   "dxt_version": "0.2",
   "name": "monarch-money-enhanced",
   "display_name": "Monarch Money Enhanced",
-  "version": "0.11.0",
+  "version": "0.11.5",
   "description": "Dynamic MCP server with 2-5x performance improvements. Automatically exposes all monarchmoney-enhanced methods with intelligent caching, query variants, request deduplication, and real-time performance monitoring.",
   "author": {
     "name": "Keith Herrington",
@@ -15,8 +15,8 @@
     "type": "python",
     "entry_point": "server.py",
     "mcp_config": {
-      "command": "uv",
-      "args": ["--directory", "${__dirname}", "run", "python", "server.py"],
+      "command": "/opt/homebrew/bin/python3.11",
+      "args": ["${__dirname}/server.py"],
       "env": {
         "PYTHONPATH": "${__dirname}",
         "MONARCH_EMAIL": "${MONARCH_EMAIL}",
@@ -56,7 +56,7 @@
   "compatibility": {
     "os": ["darwin", "win32", "linux"],
     "runtimes": {
-      "python": ">=3.8"
+      "python": ">=3.11"
     }
   },
   "icon": "💰",

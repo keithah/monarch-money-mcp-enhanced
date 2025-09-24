@@ -1,0 +1,2 @@
+[console_scripts]
+oathtool = oathtool:main
