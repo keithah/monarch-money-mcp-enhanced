@@ -1,3 +1,10 @@
+## ⚠️ **WARNING: Maintenance Notice**
+
+**This repository is no longer actively maintained. Development and support have shifted to the TypeScript/JavaScript MCP at [https://github.com/keithah/monarchmoney-mcp-ts](https://github.com/keithah/monarchmoney-mcp-ts).**  
+**Please use that repo for the most up-to-date code and support.**
+
+
+
 # 🏦 Monarch Money MCP Server Enhanced
 
 ## 🎉 Claude Desktop Extension - One-Click Installation!
